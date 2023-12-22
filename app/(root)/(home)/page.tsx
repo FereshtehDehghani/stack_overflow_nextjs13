@@ -1,11 +1,33 @@
 import HomeFilters from "@/components/home/HomeFilters";
 import Filters from "@/components/shared/Filters";
+import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 
- 
+
+const questions=[];
+//  const questions=[
+//   {
+//     _id:1,
+//     title:"Cascading Deletes in SQLAlchemy?",
+//     tags:[{_id:1,name:"python"},{_id:2,name:"sql"}],
+//     author:"John Doe",
+//     views:100,
+//     answers:2,
+//     createAt:"2021-09-01T12:00:00.000z"
+//   },
+//   {
+//     _id:1,
+//     title:"How to center a div?",
+//     tags:[{_id:1,name:"css"},{_id:2,name:"sql"}],
+//     author:"John Doe",
+//     views:100,
+//     answers:2,
+//     createAt:"2021-09-01T12:00:00.000z"
+//   }
+//  ];
 export default function Home() {
   
   return (
@@ -38,6 +60,21 @@ export default function Home() {
       containerClasses="hidden max-md:flex"/>
     </div>
     <HomeFilters/>
+
+    <div className="mt-10 flex w-full flex-col gap-6">
+      {questions.length>0?
+      questions.map((question)=>(
+'QuestionCard'
+      )) 
+      : <NoResult
+      title="There's no question to show"
+      linkTitle="Ask a Question"
+      link="/"
+      description="Be the first to break the silence!  Ask a question and kickstart the discution.our query could
+      be the next big thing others learn from.Get involved!"
+
+      />}
+    </div>
    </>
   )
 }
