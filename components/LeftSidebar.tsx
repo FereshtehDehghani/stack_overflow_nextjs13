@@ -22,7 +22,7 @@ const LeftSidebar = () => {
 {sidebarLinks.map((item)=>{
   const isActive =(pathname.includes(item.route) && item.route.length>1) || pathname === item.route;
   return(
-<Link href={item.route}
+<Link  key={item.route} href={item.route}
 className={`${isActive 
 ? 'primary-gradient rounded-lg text-light-900'
 : 'text-dark400_light800'
