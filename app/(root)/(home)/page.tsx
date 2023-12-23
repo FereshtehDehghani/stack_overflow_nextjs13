@@ -1,3 +1,4 @@
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
@@ -7,27 +8,43 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 
 
-const questions=[];
-//  const questions=[
-//   {
-//     _id:1,
-//     title:"Cascading Deletes in SQLAlchemy?",
-//     tags:[{_id:1,name:"python"},{_id:2,name:"sql"}],
-//     author:"John Doe",
-//     views:100,
-//     answers:2,
-//     createAt:"2021-09-01T12:00:00.000z"
-//   },
-//   {
-//     _id:1,
-//     title:"How to center a div?",
-//     tags:[{_id:1,name:"css"},{_id:2,name:"sql"}],
-//     author:"John Doe",
-//     views:100,
-//     answers:2,
-//     createAt:"2021-09-01T12:00:00.000z"
-//   }
-//  ];
+
+ const questions=[
+  {
+    _id: "1", // Assuming _id should be a string
+    title: "Cascading Deletes in SQLAlchemy?",
+    tags: [
+      { _id: "1", name: "python" },
+      { _id: "2", name: "sql" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      picture: "url/to/picture", // Provide a placeholder URL for the picture
+    },
+    upvotes: 12300000000, // Provide a default value for upvotes
+    views: 45000000500,
+    answers: [], // Provide an empty array for answers
+    createdAt: new Date('2022-05-30'), // Ensure that it's a valid Date object
+  },
+  {
+    _id: "2", // Assuming _id should be a string
+    title: "How to center a div?",
+    tags: [
+      { _id: "1", name: "css" },
+      { _id: "2", name: "sql" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      picture: "url/to/picture", // Provide a placeholder URL for the picture
+    },
+    upvotes: 145220000000, // Provide a default value for upvotes
+    views: 100000000,
+    answers: [], // Provide an empty array for answers
+    createdAt: new Date(), // Ensure that it's a valid Date object
+  },
+ ];
 export default function Home() {
   
   return (
@@ -64,7 +81,16 @@ export default function Home() {
     <div className="mt-10 flex w-full flex-col gap-6">
       {questions.length>0?
       questions.map((question)=>(
-'QuestionCard'
+        <QuestionCard
+        key={question._id}
+        _id={question._id}
+        title={question.title}
+        tags={question.tags}
+        author={question.author}
+        upvotes={question.upvotes}
+        answers={question.answers}
+        views={question.views}
+        createdAt={question.createdAt}/>
       )) 
       : <NoResult
       title="There's no question to show"
