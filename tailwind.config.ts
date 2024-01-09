@@ -14,11 +14,10 @@ const config: Config = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+     
     },
     extend: {
+  
       colors: {
         primary: {
           500: "#FF7000",
@@ -59,6 +58,11 @@ const config: Config = {
       },
       screens: {
         xs: "420px",
+        sm: '480px',
+        md: '700px',
+        lg: '900px',
+        xl: '1200px',
+        "2xl":"1440px",
       },
       keyframes: {
         "accordion-down": {
