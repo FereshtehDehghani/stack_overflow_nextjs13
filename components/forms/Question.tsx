@@ -20,6 +20,7 @@ import "react-quill/dist/quill.snow.css";
 import { QuestionsSchema } from "@/lib/validations";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = "create";
 
@@ -37,12 +38,13 @@ const Question = () => {
 	});
 	const editorRef = useRef(null);
 	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+	async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
 		setIsSubmitting(true);
 		try {
 			// make an async call to your api -> create a question
 			// contain all form data
 			// navigation to home page
+			await createQuestion({});
 		} catch (error) {
 		} finally {
 			setIsSubmitting(false);
@@ -122,7 +124,10 @@ const Question = () => {
 							</FormLabel>
 							<FormControl className="mt-3.5">
 								<ReactQuill
+									{...field}
 									theme="snow"
+									onBlur={field.onBlur}
+									onChange={field.onChange}
 									className="no-focus paragraph-regular 
                 background-light900_dark300 light-border-2
                 text-dark300_light700 min-h-[56px] border"
