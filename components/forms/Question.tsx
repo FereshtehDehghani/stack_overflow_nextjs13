@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -15,17 +15,26 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { QuestionsSchema } from "@/lib/validations";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 const type: any = "create";
 
-const Question = () => {
+interface Props {
+	mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
 	// 1. Define your form.
+	const ReactQuill = useMemo(
+		() => dynamic(() => import("react-quill"), { ssr: false }),
+		[]
+	);
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const form = useForm<z.infer<typeof QuestionsSchema>>({
@@ -36,7 +45,9 @@ const Question = () => {
 			tags: [],
 		},
 	});
-	const editorRef = useRef(null);
+
+	const router = useRouter();
+	const pathName = usePathname();
 	// 2. Define a submit handler.
 	async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
 		setIsSubmitting(true);
@@ -44,7 +55,16 @@ const Question = () => {
 			// make an async call to your api -> create a question
 			// contain all form data
 			// navigation to home page
-			await createQuestion({});
+			console.log(values.explanation);
+			await createQuestion({
+				title: values.title,
+				content: values.explanation,
+				tags: values.tags,
+				author: JSON.parse(mongoUserId),
+			});
+
+			// navigate to home page
+			router.push("/");
 		} catch (error) {
 		} finally {
 			setIsSubmitting(false);
@@ -91,7 +111,7 @@ const Question = () => {
 				<FormField
 					control={form.control}
 					name="title"
-					render={({ field }) => (
+					render={({ field }: any) => (
 						<FormItem className="flex w-full flex-col">
 							<FormLabel className="paragraph-semibold text-dark400_light800">
 								Question title <span className="text-primary-500">*</span>
@@ -126,8 +146,9 @@ const Question = () => {
 								<ReactQuill
 									{...field}
 									theme="snow"
-									onBlur={field.onBlur}
-									onChange={field.onChange}
+									// onBlur={(text) => field.onBlur(text)}
+									onChange={(text) => field.onChange(text)}
+									value={field.value}
 									className="no-focus paragraph-regular 
                 background-light900_dark300 light-border-2
                 text-dark300_light700 min-h-[56px] border"
